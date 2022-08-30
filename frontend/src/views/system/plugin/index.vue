@@ -4,7 +4,7 @@
   >
     <div class="top-install">
       <el-input
-        placeholder="通过插件名称搜索"
+        :placeholder="$t('components.by_plugin_name')"
         size="small"
         prefix-icon="el-icon-search"
         v-model="name"
@@ -64,13 +64,13 @@
           </div>
           <div class="info-left">
             <p class="list name" v-for="item in listName" :key="item">
-              {{ item }}
+              {{ $t(`components.${item}`) }}
             </p>
           </div>
           <div class="info-right">
             <p class="list value" v-for="item in listValue" :key="item">
               <template v-if="item === 'cost' && !ele.cost">
-                <el-tag size="mini" type="success">免费</el-tag>
+                <el-tag size="mini" type="success">{{ $t('components.free')}}</el-tag>
               </template>
               <template v-else>
                 {{ ele[item] }}
@@ -78,7 +78,7 @@
             </p>
           </div>
         </div>
-        <div class="card-method">
+        <div class="card-method" :class="`btn-${numPlugin}`">
           <el-upload
             v-permission="['plugin:upload']"
             :action="baseUrl + 'api/plugin/update/' + ele.pluginId"
@@ -93,14 +93,14 @@
             :headers="headers"
           >
             <div class="btn-plugin update">
-              <i class="el-icon-more"></i>更新
+              <i class="el-icon-more"></i>{{ $t('dataset.update')}}
             </div>
           </el-upload>
-          <el-divider direction="vertical"></el-divider>
+          <el-divider v-if="numPlugin === 2" direction="vertical"></el-divider>
           <el-tooltip
             class="item"
             effect="dark"
-            :content="'内置插件，无法卸载'"
+            :content="$t('components.unable_to_uninstall')"
             placement="top"
           >
             <div
@@ -109,7 +109,7 @@
               @click="del(ele)"
               class="btn-plugin uninstall"
             >
-              <i class="el-icon-more"></i>卸载
+              <i class="el-icon-more"></i> {{$t('components.uninstall')}}
             </div>
           </el-tooltip>
           <div
@@ -118,7 +118,7 @@
             @click="del(ele)"
             class="btn-plugin uninstall"
           >
-            <i class="el-icon-more"></i>卸载
+            <i class="el-icon-more"></i>{{$t('components.uninstall')}}
           </div>
         </div>
       </div>
@@ -134,12 +134,13 @@ import { formatCondition, formatQuickCondition } from "@/utils/index";
 import { pluginLists, uninstall } from "@/api/system/plugin";
 import { getToken } from "@/utils/auth";
 import msgCfm from "@/components/msgCfm/index";
+import { log } from '@antv/g2plot/lib/utils';
 export default {
   components: { DeLayoutContent },
   mixins: [msgCfm],
   data() {
     return {
-      listName: ["费用", "开发者", "版本", "安装时间"],
+      listName: ["cost", "developer", "edition", "installation_time"],
       name: "",
       listValue: ["cost", "creator", "version", "installTime"],
       data: [],
@@ -147,17 +148,22 @@ export default {
       uploading: false,
       baseUrl: process.env.VUE_APP_BASE_API,
       fileList: [],
+      numPlugin: 0,
       headers: { Authorization: getToken() },
     };
   },
   mounted() {
     this.search();
     this.bindKey();
+    this.authValidate()
   },
   destroyed() {
     this.unBindKey();
   },
   methods: {
+    authValidate() {
+      this.numPlugin = Number(checkPermission(['plugin:uninstall'])) + Number(checkPermission(['plugin:upload']))
+    },
     entryKey(event) {
       const keyCode = event.keyCode;
       if (keyCode === 13) {
@@ -264,10 +270,11 @@ export default {
   flex-wrap: wrap;
   background-color: var(--MainBG, #f5f6f7);
   overflow-y: auto;
+  align-content: flex-start;
 }
 .de-card-plugin {
   width: 270px;
-  height: 230px;
+  min-height: 188px;
   background: #ffffff;
   border: 1px solid #dee0e3;
   border-radius: 4px;
@@ -318,6 +325,10 @@ export default {
     .btn-plugin.uninstall:not(.is-disable):hover {
       color: var(--deDangerHover, #26acff);
     }
+  }
+
+  .btn-0 {
+    display: none;
   }
 
   .card-info {

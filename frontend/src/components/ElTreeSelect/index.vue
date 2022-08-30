@@ -10,7 +10,7 @@
       :collapse-tags="showNumber"
       class="el-tree-select-input"
       :disabled="disabled"
-      popper-class="select-option"
+      popper-class="de-select-option"
       v-bind="selectParams"
       :popper-append-to-body="popperAppendToBody"
       :filterable="false"
@@ -229,6 +229,9 @@ export default {
     off(document, 'mouseup', this._popoverHideFun)
   },
   methods: {
+    resetSelectAll() {
+      this.selectAll = false
+    },
     selectAllChane(val) {
       if (val) {
         this.ids = this._checkSum()
@@ -531,7 +534,7 @@ export default {
 }
 </script>
 <style>
-.el-tree-select .select-option {
+.el-tree-select .de-select-option {
     display: none !important;
 }
 .tree-select-all {

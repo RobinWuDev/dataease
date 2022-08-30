@@ -18,11 +18,11 @@
           <slot>
             <el-dropdown-item command="rename">
               <i class="el-icon-edit"></i>
-              重命名
+              {{ $t('chart.rename')}}
             </el-dropdown-item>
             <el-dropdown-item command="delete">
               <i class="el-icon-delete"></i>
-              删除
+              {{ $t('chart.delete')}}
             </el-dropdown-item>
           </slot>
         </el-dropdown-menu>
@@ -72,7 +72,7 @@ export default {
   background: #ffffff;
   border: 1px solid var(--deCardStrokeColor, #dee0e3);
   border-radius: 4px;
-  margin: 0 25px 25px 0;
+  margin: 0 12.5px 25px 12.5px;
   .card-img-model {
     border-bottom: 1px solid var(--deCardStrokeColor, #dee0e3);
     height: 144px;
