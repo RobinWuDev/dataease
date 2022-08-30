@@ -337,6 +337,11 @@
             <version>1.5.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-vfs2</artifactId>
+            <version>2.9.0</version>
+        </dependency>
 
     </dependencies>
 
@@ -527,9 +532,10 @@
 
     <repositories>
         <repository>
-            <id>pentaho-public</id>
-            <name>Pentaho Public</name>
-            <url>https://nexus.pentaho.org/content/groups/omni</url>
+            <id>emarbox-public</id>
+            <name>emarbox Public</name>
+            <url>https://nexus3.emarbox.com/repository/maven-public</url>
+            <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
